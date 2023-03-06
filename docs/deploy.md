@@ -32,3 +32,15 @@ DB_PASSWORD=''
 DB_HOST=''
 DB_PORT=''
 ```
+
+## 6. Configuramos nuestro dominio
+Para que el proyecto pueda ser accedido desde un dominio, debemos configurar el dominio en Railway y en nuestro proyecto
+
+```python
+ALLOWED_HOST = ["domain.railway.app"]
+```
+
+## 7. Configuramos nuestros archivos estáticos
+```bash
+
+```
