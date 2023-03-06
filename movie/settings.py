@@ -34,6 +34,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [".vercel.app", "127.0.0.1", "movieproject-production.up.railway.app"]
 
+CSRF_TRUSTED_ORIGINS = [".vercel.app", "127.0.0.1", "movieproject-production.up.railway.app"]
 
 # Application definition
 
