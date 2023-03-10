@@ -20,7 +20,7 @@ web: python manage.py migrate && gunicorn movie.wsgi
 ```
 
 ## 4. Creamos nuestra base de datos en Railway
-Estamos usando mysql por defecto
+Estamos usando mysql por defecto.
 
 [railway.app](https://railway.app)
 
@@ -36,11 +36,29 @@ DB_PORT=''
 ## 6. Configuramos nuestro dominio
 Para que el proyecto pueda ser accedido desde un dominio, debemos configurar el dominio en Railway y en nuestro proyecto
 
-```python
-ALLOWED_HOST = ["domain.railway.app"]
+```py
+ALLOWED_HOSTS = ['domain.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://domain.railway.app']
 ```
 
-## 7. Configuramos nuestros archivos estáticos
-```bash
+## 7. Configuramos nuestros archivos staticos
 
+```py
+INSTALLED_APPS = [
+    ...,
+    'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',    
+    ...
+]
+
+MIDDLEWARE = [
+    ...,
+    "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    ...
+]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE="whitenoise.storage.CompressedManifestStaticFilesStorage"
 ```
