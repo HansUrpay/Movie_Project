@@ -9,14 +9,13 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 import environ
 import os
-
-env = environ.Env(
-    DEBUG = (bool, False)
-)
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,14 +26,14 @@ environ.Env.read_env(os.path.join(BASE_DIR, "env"))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
-CSRF_TRUSTED_ORIGINS = ["https://movieproject-production.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS').split(',')
 
 # Application definition
 
@@ -89,17 +88,22 @@ WSGI_APPLICATION = 'movie.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('MYSQLDATABASE'),
-        'PORT': env('MYSQLPORT'),
-        'USER': env('MYSQLUSER'),
-        'PASSWORD': env('MYSQLPASSWORD'),
-        'HOST': env('MYSQLHOST'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.environ.get('MYPOSTGRESQLDATABASE'),
+#         'PORT': os.environ.get('MYPOSTGRESQLPORT'),
+#         'USER': os.environ.get('MYPOSTGRESQLUSER'),
+#         'PASSWORD': os.environ.get('MYPOSTGRESQLPASSWORD'),
+#         'HOST': os.environ.get('MYPOSTGRESQLHOST'),
+#     }
+# }
 
+# conexion de DB con PostgreSQL de Render (OPCION 2)
+DB_CONNECTION = os.environ.get('URL_POSTGRESQL')
+DATABASES = {
+  'default': dj_database_url.parse(DB_CONNECTION)
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
